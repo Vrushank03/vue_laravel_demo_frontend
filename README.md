@@ -22,3 +22,5 @@ npm run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+# vue_laravel_demo_frontend
+Demo website for using vue js in frontend and laravel in backend.
