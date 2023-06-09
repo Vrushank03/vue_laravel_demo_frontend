@@ -47,6 +47,9 @@
 <script>
     import axios from 'axios';
 
+    import baseurl from '../../configure.json'
+
+
     export default {
 
         name:'UserData',
@@ -64,14 +67,14 @@
         },
         async mounted() {
 
-            let response = await axios.get('http://127.0.0.1:8000/api/users');
+            let response = await axios.get(baseurl.baseurl+'users');
             this.users = response.data; 
         },
         
         methods: {
             async deleteUser(userId) {
 
-                    await axios.get(`http://127.0.0.1:8000/api/delete-user/${userId}`)
+                    await axios.get(baseurl.baseurl+`delete-user/${userId}`)
                     .then(response => 
                     {
                         this.message = response.data.message;

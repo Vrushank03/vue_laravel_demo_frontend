@@ -31,6 +31,9 @@
 
     import axios from 'axios';
 
+    import baseurl from '../../configure.json'
+
+
     export default {
 
         name:'UserLogin',
@@ -49,7 +52,7 @@
         methods: {
             async userlogin() {
 
-                let response = await axios.post('http://127.0.0.1:8000/api/user-login',this.user)
+                let response = await axios.post(baseurl.baseurl+'user-login',this.user)
 
                 if (response.data.success === '1') {
 

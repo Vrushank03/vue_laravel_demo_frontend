@@ -54,6 +54,9 @@
 
     import axios from 'axios';
 
+    import baseurl from '../../configure.json'
+
+
     export default {
 
         name:'UpdateUser',
@@ -65,7 +68,7 @@
                 userId:'',
 
                 user: { 
-                    id:'',
+                    user_id:'',
                     first_name: '',
                     last_name:'',
                     email: '',
@@ -82,11 +85,11 @@
         async mounted() {
 
             this.userId = this.$route.params.id;
-            const response = await axios.get('http://127.0.0.1:8000/api/user-data/' + this.userId);
+            const response = await axios.get(baseurl.baseurl+'user-data/' + this.userId);
             const { userdataforupdate } = response.data;
             this.response = userdataforupdate;
             this.user = {
-                id: userdataforupdate.user_id,
+                user_id: userdataforupdate.user_id,
                 first_name: userdataforupdate.first_name,
                 last_name: userdataforupdate.last_name,
                 email: userdataforupdate.email,
@@ -99,7 +102,7 @@
 
             async saveUser() {
 
-                let response = await axios.post('http://127.0.0.1:8000/api/update-user',this.user)
+                let response = await axios.post(baseurl.baseurl+'update-user',this.user)
                 
                 if (response.data.message === 'success') {
                     const message = response.data.message;

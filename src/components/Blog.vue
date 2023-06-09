@@ -30,19 +30,8 @@
             </div>
 
             <div class="col-sm-12 col-md-12 col-lg-8 col-xl-8 col-xxl-8">
-
-                <div class="card w-100 my-5 border-0 rounded-0 shadow" v-for="blog in formattedBlogs" :key="blog.blog_id">
-
-                    <img :src="blog.image" alt="" class="img-fluid w-100 image">
-
-                    <div class="card-body">
-                        <h5 class="card-title fs-3 text-dark text-uppercase text-start pb-3">{{ blog.title }}</h5>
-                        <div class="fs-5 fw-lighter text-start pb-3 ">{{blog.category.category_name +" , "+blog.formattedDate }}</div>
-                        <div class="card-text text-start pb-3 fw-light text-body">{{ blog.description }}</div>
-                        <button style="cursor: pointer;" class="btn btn-outline-dark float-start rounded-0">READ MORE</button>
-                    </div>
-                    
-                </div>
+                
+                <BlogTemplete  :blogs="blogs"/>
 
             </div>
 
@@ -58,16 +47,17 @@
                 </div>
 
                 <div  class="my-5 shadow">
+
                     <div class="border-bottom bg-light p-3 fs-3 text-dark text-start">
                         Popular Category
                     </div>
                     <div class="d-flex flex-column bg-body mb-3">
+
                         <div class="p-3 bg-body text-start border-bottom fs-6 category" @click="filterbyCategory('')">
                             All
                         </div>
-                        <div class="p-3 bg-body text-start border-bottom fs-6 category" v-for="category in blogsCategories" :key="category.category_id" @click="filterbyCategory(category.category_id)">
-                            {{ category.category_name }}
-                        </div>
+                                   
+                       <CategoryTemplete :blogsCategories="blogsCategories" :filterByCategory="filterbyCategory"/>
                     </div>
                 </div>
             </div>
@@ -80,11 +70,23 @@
 
     import axios from 'axios';
 
-    import moment from 'moment';
+    import baseurl from '../../configure.json';
 
+    import BlogTemplete from './BlogTemplete.vue';
+
+    import CategoryTemplete  from './CategoryTemplete.vue';
+
+    
     export default {
 
         name:'BlogData',
+
+        components: {
+
+            BlogTemplete,
+            CategoryTemplete
+
+        },
 
         data() {
 
@@ -99,7 +101,7 @@
 
         async mounted() {
 
-            let response = await axios.post('http://127.0.0.1:8000/api/blogs');
+            let response = await axios.post(baseurl.baseurl+'blogs');
             this.blogs = response.data.blogs;
             this.user   = response.data.user;
             this.blogsCategories = response.data.blogsCategories;
@@ -116,27 +118,12 @@
 
             async filterbyCategory(categoryId){
 
-                let filterresponse = await axios.post('http://127.0.0.1:8000/api/blogs',{category_id:categoryId});
+                let filterresponse = await axios.post(baseurl.baseurl+'blogs',{category_id:categoryId});
                 this.blogs = filterresponse.data.blogs;
 
             }
         },
-        computed: {
-
-            formattedBlogs() {
-
-                return this.blogs.map(blog => {
-
-                    return {
-
-                        ...blog,
-                        formattedDate: moment(blog.created_at).format('MMMM D, YYYY')
-
-                    };
-                });
-
-            }
-        }
+       
 
     };
 </script>
