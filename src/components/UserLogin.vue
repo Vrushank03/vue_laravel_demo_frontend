@@ -101,7 +101,6 @@
 
                     this.passwordErrorMessage = this.isPasswordValid ? '' : 'Password must have at least 6 characters';
                     this.emailErrorMessage = this.isEmailValid ? '' : 'Please enter a valid email';
-                    console.log('Form validation failed');
 
                 }
             }
