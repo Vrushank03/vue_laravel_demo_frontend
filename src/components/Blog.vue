@@ -1,6 +1,6 @@
 <template>
 
-    <nav class="navbar navbar-dark bg-dark justify-content-end">
+    <!-- <nav class="navbar navbar-dark bg-dark justify-content-end">
         <li class="nav-item dropdown me-2">
 
             <a class="text-decoration-none text-light  dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink"
@@ -15,7 +15,8 @@
                 </li>
             </ul>
         </li>
-    </nav>
+    </nav> -->
+    <NavbarTemplete :user="user" :logout="logout"/>
 
     <div class="container-fluid  w-75">
 
@@ -76,6 +77,8 @@
 
     import CategoryTemplete  from './CategoryTemplete.vue';
 
+    import NavbarTemplete from './Navnar.vue';
+
     
     export default {
 
@@ -84,7 +87,8 @@
         components: {
 
             BlogTemplete,
-            CategoryTemplete
+            CategoryTemplete,
+            NavbarTemplete
 
         },
 

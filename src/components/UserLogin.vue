@@ -1,75 +1,141 @@
 <template>
 
-    <div class="container rounded shadow m-auto">
-        <div class="row g-3  justify-content-center">
+    <form @submit.prevent="userlogin">
 
-            <div class="col-12 fs-1 text-danger mb-3">
-                <b>Login</b>     
+        <div class="container rounded shadow m-auto">
+
+            <div class="row g-3 justify-content-center">
+    
+                <div class="col-12 fs-1 text-danger mb-3">
+                    <b>Login</b>
+                </div>
+        
+                <div class="form-group col-12">
+                    <label for="email" class="form-label float-start">Email</label>
+                    <input type="email" class="form-control" :class="{ 'is-invalid': !isEmailValid && formSubmitted }" id="email" name="email" placeholder="enter your email" v-model="user.email" >
+                    <div v-if="!isEmailValid && formSubmitted" class="invalid-feedback text-start">{{ emailErrorMessage }}</div>
+                </div>
+        
+                <div class="form-group col-12">
+                    <label for="password" class="form-label float-start">Password</label>
+                    <input type="password" class="form-control" :class="{ 'is-invalid': !isPasswordValid && formSubmitted }" id="password" name="password" placeholder="enter your password" v-model="user.password" >
+                    <div v-if="!isPasswordValid && formSubmitted" class="invalid-feedback text-start">{{ passwordErrorMessage }}</div>
+                </div>
+        
+                <div class="d-flex flex-row-reverse bd-highlight mb-2">
+                    <button class="btn btn-outline-danger me-1 rounded-pill" style="width: 10%;">Add</button>
+                </div>
+    
             </div>
 
-            <div class="form-group col-12 ">
-                <label for="email" class="form-label float-start">Email</label>
-                <input type="email" class="form-control " id="email" name="email" placeholder="enter your email"  v-model="user.email" required>
-            </div>
-
-            <div class="form-group col-12 ">
-                <label for="password" class="form-label float-start">Password</label>
-                <input type="password" class="form-control " id="password" name="password" placeholder="enter your password" v-model="user.password"  required>
-            </div>
-
-            <div class="d-flex flex-row-reverse bd-highlight mb-2">
-                <button class="btn btn-outline-danger me-1 rounded-pill" @click="userlogin" style="width: 10%;">Add</button>
-            </div>
+            {{ success }}
 
         </div>
-        {{ success }}
-    </div>
 
-</template>
+    </form>
+
+  </template>
   
-<script>
+  <script>
 
     import axios from 'axios';
 
     import baseurl from '../../configure.json'
-
-
+    
     export default {
 
-        name:'UserLogin',
+        name: 'UserLogin',
 
         data() {
+            
             return {
 
-                user: { 
+                user: {
+
                     email: '',
-                    password:'',
+                    password: '',
+
                 },
 
-                success:''
+                success: '',
+
+                formSubmitted: false,
+
+                emailErrorMessage: '', 
+
+                passwordErrorMessage: '',
             };
+
         },
+
         methods: {
+
             async userlogin() {
 
-                let response = await axios.post(baseurl.baseurl+'user-login',this.user)
+                this.formSubmitted = true;
+                console.log(this.isPasswordValid);
+        
+                if (this.isPasswordValid && this.isEmailValid) {
 
-                if (response.data.success === '1') {
+                    let response = await axios.post(baseurl.baseurl + 'user-login', this.user)
+            
+                    if (response.data.success === '1') 
+                    {
 
-                    this.success=response.data.message;
-                    const token = response.data.token;
-                    window.localStorage.setItem('token',token)
-                    this.$router.replace('/blogs');
-                }
-                else{
+                        this.success = response.data.message;
+                        const token = response.data.token;
+                        window.localStorage.setItem('token', token)
+                        this.$router.replace('/blogs');
 
-                    this.success=response.data.message;
-                    this.$router.replace('/userlogin');
-                    
+                    } 
+                    else 
+                    {
+
+                        this.success = response.data.message;
+                        this.$router.replace('/userlogin');
+
+                    }
+                } 
+
+                else {
+
+                    this.passwordErrorMessage = this.isPasswordValid ? '' : 'Password must have at least 6 characters';
+                    this.emailErrorMessage = this.isEmailValid ? '' : 'Please enter a valid email';
+                    console.log('Form validation failed');
+
                 }
             }
-        }
-    };
 
-</script>
+        },
+
+        computed: {
+
+            isPasswordValid() {
+
+                return this.user.password.length > 5; 
+
+            },
+
+            isEmailValid() {
+
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return emailRegex.test(this.user.email);
+
+            },
+        },
+    };
+  </script>
   
+<style scoped>
+    .is-invalid {
+
+        border: 1px solid red;
+
+    }
+    .invalid-feedback {
+
+        color: red;
+        font-size: 12px;
+
+    }
+</style>
