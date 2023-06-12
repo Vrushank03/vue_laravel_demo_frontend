@@ -1,8 +1,8 @@
 <template>
 
-    <form @submit.prevent="userlogin">
+    <form @submit.prevent="userlogin" class="bg-body login">
 
-        <div class="container rounded shadow m-auto">
+        <div class="container rounded shadow ">
 
             <div class="row g-3 justify-content-center">
     
@@ -27,7 +27,6 @@
                 </div>
     
             </div>
-
             {{ success }}
 
         </div>
@@ -73,7 +72,6 @@
             async userlogin() {
 
                 this.formSubmitted = true;
-                console.log(this.isPasswordValid);
         
                 if (this.isPasswordValid && this.isEmailValid) {
 
@@ -134,7 +132,13 @@
     .invalid-feedback {
 
         color: red;
-        font-size: 12px;
+        font-size: 14px;
+
+    }
+
+    .login{
+
+        margin-top: 15% !important;
 
     }
 </style>
