@@ -1,21 +1,5 @@
 <template>
 
-    <!-- <nav class="navbar navbar-dark bg-dark justify-content-end">
-        <li class="nav-item dropdown me-2">
-
-            <a class="text-decoration-none text-light  dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink"
-                role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <img :src="user.avatar" class="image-fluid rounded-circle" width="50" height="50" alt="">
-                {{ user.first_name+" "+user.last_name }}            
-            </a>
-
-            <ul class="dropdown-menu dropdown-menu-dark " aria-labelledby="navbarDarkDropdownMenuLink">
-                <li>
-                    <router-link to="/logout" class="dropdown-item" @click="logout()">logout</router-link>
-                </li>
-            </ul>
-        </li>
-    </nav> -->
     <NavbarTemplete :user="user" :logout="logout"/>
 
     <div class="container-fluid  w-75">
@@ -59,6 +43,7 @@
                         </div>
                                    
                        <CategoryTemplete :blogsCategories="blogsCategories" :filterByCategory="filterbyCategory"/>
+
                     </div>
                 </div>
             </div>
@@ -103,29 +88,32 @@
             };
         },
 
+    
         async mounted() {
+
 
             let response = await axios.post(baseurl.baseurl+'blogs');
             this.blogs = response.data.blogs;
             this.user   = response.data.user;
             this.blogsCategories = response.data.blogsCategories;
-            
+            this.$forceUpdate();
         },
 
         methods: {
 
             async logout() {
 
-                    window.localStorage.setItem('token','');
+                window.localStorage.setItem('token','');
 
-                },
+            },
 
             async filterbyCategory(categoryId){
 
                 let filterresponse = await axios.post(baseurl.baseurl+'blogs',{category_id:categoryId});
                 this.blogs = filterresponse.data.blogs;
 
-            }
+            },
+
         },
        
 

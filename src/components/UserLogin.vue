@@ -39,7 +39,7 @@
 
     import axios from 'axios';
 
-    import baseurl from '../../configure.json'
+    import baseurl from '../../configure.json';
     
     export default {
 
@@ -83,6 +83,7 @@
                         this.success = response.data.message;
                         const token = response.data.token;
                         window.localStorage.setItem('token', token)
+                        axios.defaults.headers.common['Authorization'] = `Bearer `+window.getToken;
                         this.$router.replace('/blogs');
 
                     } 

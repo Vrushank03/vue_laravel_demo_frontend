@@ -9,6 +9,10 @@ const app = createApp(App);
 
 app.config.globalProperties.$http = axios;
 
-axios.defaults.headers.common['Authorization'] = `Bearer `+window.localStorage.getItem('token');
+if(window.localStorage.getItem('token')!==null)
+{
+    window.getToken = window.localStorage.getItem('token');
+}
+axios.defaults.headers.common['Authorization'] = `Bearer `+window.getToken;
 
 app.use(router).mount('#app');
